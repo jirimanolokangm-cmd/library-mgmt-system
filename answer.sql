@@ -25,7 +25,7 @@ CREATE TABLE Books (
     category VARCHAR(50),
     published_year INT,
     quantity_available INT DEFAULT 1,
-    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id) ON DELETE CASCADE
 );
 
 -- Table for Members
@@ -45,15 +45,15 @@ CREATE TABLE BorrowRecords (
     borrow_date DATE NOT NULL,
     return_date DATE,
     status VARCHAR(20) DEFAULT 'borrowed',
-    FOREIGN KEY (book_id) REFERENCES Books(book_id),
-    FOREIGN KEY (member_id) REFERENCES Members(member_id)
+    FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE,
+    FOREIGN KEY (member_id) REFERENCES Members(member_id) ON DELETE CASCADE
 );
 
 -- 3. Insert sample data
 
 INSERT INTO Authors (author_name, nationality) VALUES
 ('Chinua Achebe', 'Nigerian'),
-('Ngugi wa Thiong\'o', 'Kenyan'),
+('Ngugi wa Thiong"o', 'Kenyan'),
 ('Chimamanda Ngozi Adichie', 'Nigerian');
 
 INSERT INTO Books (title, author_id, category, published_year, quantity_available) VALUES
@@ -65,10 +65,12 @@ INSERT INTO Members (full_name, email, phone, join_date) VALUES
 ('Jirimano Lokangm', 'jirimano@example.com', '0700000000', '2026-09-01'),
 ('John Doe', 'john@example.com', '0711000000', '2026-09-02');
 
-INSERT INTO BorrowRecords (book_id, member_id, borrow_date, status) VALUES
-(1, 1, '2026-09-09', 'borrowed'),
-(2, 2, '2026-09-08', 'returned');
+INSERT INTO BorrowRecords (book_id, member_id, borrow_date, return_date, status) VALUES
+(1, 1, '2026-09-09', NULL, 'borrowed'),
+(2, 2, '2026-09-08', '2026-09-09', 'returned');
 
 -- 4. Verify data
+SELECT * FROM Authors;
 SELECT * FROM Books;
 SELECT * FROM Members;
+SELECT * FROM BorrowRecords;
